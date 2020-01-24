@@ -1,27 +1,42 @@
 package easywhatsapp
 
 import (
+	"log"
 	"time"
 
 	"github.com/Rhymen/go-whatsapp"
+	"github.com/Rhymen/go-whatsapp/binary/proto"
 	"github.com/pusher/pusher-http-go"
 )
 
 type EasyWhatsapp struct {
-	Timeout    time.Duration
-	Connection *whatsapp.Conn
-	Session    whatsapp.Session
-	Streamer   Streamer
+	Timeout       time.Duration
+	Connection    *whatsapp.Conn
+	Session       whatsapp.Session
+	Streamer      Streamer
+	Message       MessageHandler
+	Synchronously bool
 }
 
 type Streamer struct {
 	Pusher PusherClient
-	NSQ    NSQClient
 }
 
-// New instantiate of EasyWhatsapp Struct
-// PusherClient with key : "APP_ID", "APP_KEY", "APP_SECRET", "APP_CLUSTER"
-func (w *EasyWhatsapp) New(timeLimit int) (*EasyWhatsapp, error) {
+func (m *EasyWhatsapp) ShouldCallSynchronously() bool {
+	return m.Synchronously
+}
+
+func (m *EasyWhatsapp) HandleError(err error) {
+	log.Fatalf("Error retrieving chat history : %s", err)
+}
+
+func (w *EasyWhatsapp) HandleRawMessage(message *proto.WebMessageInfo) {
+	if message != nil && message.Key.RemoteJid != nil {
+		w.Message.RemoteJID[*message.Key.Id] = *message.Key.RemoteJid
+	}
+}
+
+func (w *EasyWhatsapp) New(timeLimit int, synchronously bool) (*EasyWhatsapp, error) {
 	t := timeout(timeLimit)
 	conn, err := whatsapp.NewConn(t)
 	if err != nil {
@@ -29,9 +44,14 @@ func (w *EasyWhatsapp) New(timeLimit int) (*EasyWhatsapp, error) {
 	}
 
 	return &EasyWhatsapp{
-		Connection: conn,
-		Timeout:    timeout(timeLimit),
+		Connection:    conn,
+		Synchronously: synchronously,
+		Timeout:       timeout(timeLimit),
 	}, nil
+}
+
+func (w *EasyWhatsapp) RemoteJids() map[string]string {
+	return w.Message.RemoteJID
 }
 
 func timeout(timeout int) time.Duration {
