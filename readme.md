@@ -1,6 +1,6 @@
 ## EasyWhatsapp
 
-easywhatsapp is whatsapp library to make easy implement package from [Rhymen/go-whatsapp](https://github.com/Rhymen/go-whatsapp).
+easywhatsapp is whatsapp library for Go to make easy implement package from [Rhymen/go-whatsapp](https://github.com/Rhymen/go-whatsapp).
 
 Big thanks to [sigalor/whatsapp-web-reveng](https://github.com/sigalor/whatsapp-web-reveng) and all contributors who made it.
 
