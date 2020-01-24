@@ -20,7 +20,6 @@ type EasyWhatsapp struct {
 
 type Streamer struct {
 	Pusher PusherClient
-	NSQ    NSQClient
 }
 
 func (m *EasyWhatsapp) ShouldCallSynchronously() bool {
