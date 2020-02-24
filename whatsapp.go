@@ -36,7 +36,7 @@ func (w *EasyWhatsapp) HandleRawMessage(message *proto.WebMessageInfo) {
 	}
 }
 
-func (w *EasyWhatsapp) New(timeLimit int, synchronously bool) (*EasyWhatsapp, error) {
+func New(timeLimit int, synchronously bool) (*EasyWhatsapp, error) {
 	t := timeout(timeLimit)
 	conn, err := whatsapp.NewConn(t)
 	if err != nil {
