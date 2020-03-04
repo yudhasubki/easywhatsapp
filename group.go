@@ -10,9 +10,9 @@ type Group struct {
 	GroupID string `json:"gid"`
 }
 
-func (e *EasyWhatsapp) CreateGroup() (Group, error) {
+func (e *EasyWhatsapp) CreateGroup(groupName string, participants []string) (Group, error) {
 	var group Group
-	js, err := e.Connection.CreateGroup("Bongkeng", []string{"6281992156001@s.whatsapp.net"})
+	js, err := e.Connection.CreateGroup(groupName, participants)
 	if err != nil {
 		fmt.Println(err)
 	}
