@@ -27,7 +27,7 @@ func (m *EasyWhatsapp) ShouldCallSynchronously() bool {
 }
 
 func (m *EasyWhatsapp) HandleError(err error) {
-	log.Fatalf("Error retrieving chat history : %s", err)
+	log.Printf("Error retrieving chat history : %s", err)
 }
 
 func (w *EasyWhatsapp) HandleRawMessage(message *proto.WebMessageInfo) {
@@ -48,10 +48,6 @@ func New(timeLimit int, synchronously bool) (*EasyWhatsapp, error) {
 		Synchronously: synchronously,
 		Timeout:       timeout(timeLimit),
 	}, nil
-}
-
-func (w *EasyWhatsapp) RemoteJids() map[string]string {
-	return w.Message.RemoteJID
 }
 
 func timeout(timeout int) time.Duration {

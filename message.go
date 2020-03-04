@@ -26,10 +26,6 @@ func (m *MessageHandler) ShouldCallSynchronously() bool {
 	return true
 }
 
-func (m *MessageHandler) HandleError(err error) {
-	log.Printf("Error occured while retrieving chat history: %s", err.Error())
-}
-
 func (m *MessageHandler) HandleTextMessage(message whatsapp.TextMessage) {
 	authorID := "-"
 	screenName := "-"
@@ -56,12 +52,16 @@ func (m *MessageHandler) HandleTextMessage(message whatsapp.TextMessage) {
 	})
 }
 
+func (m *MessageHandler) HandleError(err error) {
+	log.Printf("error occured while retrieving chat history: %s", err.Error())
+}
+
 func (w *EasyWhatsapp) AddHandler() *EasyWhatsapp {
-	w.Connection.AddHandler(w)
 	w.Message = MessageHandler{
 		Connection: w.Connection,
 		RemoteJID:  make(map[string]string),
 	}
+	w.Connection.AddHandler(w)
 	return w
 }
 
@@ -98,7 +98,21 @@ func (w *MessageHandler) GetChats(chunkSize int) (histories []History) {
 			})
 		}
 	}
+	return
+}
 
+func (w *MessageHandler) GetGroupChats(chunkSize int) (histories []History) {
+	for _, g := range w.GetGroupJID() {
+		messages := w.GetHistory(g, chunkSize)
+		for _, message := range messages {
+			histories = append(histories, History{
+				AuthorID:   message.AuthorID,
+				Message:    message.Message,
+				Date:       message.Date,
+				ScreenName: message.ScreenName,
+			})
+		}
+	}
 	return
 }
 
