@@ -13,7 +13,7 @@ const (
 )
 
 func (w *EasyWhatsapp) Read() (whatsapp.Session, error) {
-	file, err := os.Open(path())
+	file, err := os.Open(w.path())
 	if err != nil {
 		return w.Session, err
 	}
@@ -29,7 +29,7 @@ func (w *EasyWhatsapp) Read() (whatsapp.Session, error) {
 }
 
 func (w *EasyWhatsapp) Write() error {
-	file, err := os.Create(path())
+	file, err := os.Create(w.path())
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func (w *EasyWhatsapp) Write() error {
 }
 
 func (w *EasyWhatsapp) Delete() error {
-	err := os.Remove(path())
+	err := os.Remove(w.path())
 	if err != nil {
 		return err
 	}
@@ -58,6 +58,16 @@ func (w *EasyWhatsapp) Exist() bool {
 	return false
 }
 
-func path() string {
-	return fmt.Sprintf("%s/%s", os.TempDir(), FILE_NAME)
+func (w *EasyWhatsapp) path() string {
+	sessionPath := w.SessionPath
+	if sessionPath == nil {
+		*sessionPath = os.TempDir()
+	}
+
+	sessionFileName := w.SessionFileName
+	if sessionFileName == nil {
+		*sessionFileName = FILE_NAME
+	}
+
+	return fmt.Sprintf("%s/%s", *sessionPath, *sessionFileName)
 }
