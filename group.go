@@ -2,7 +2,6 @@ package easywhatsapp
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 type Group struct {
@@ -14,7 +13,7 @@ func (e *EasyWhatsapp) CreateGroup(groupName string, participants []string) (Gro
 	var group Group
 	js, err := e.Connection.CreateGroup(groupName, participants)
 	if err != nil {
-		fmt.Println(err)
+		return Group{}, err
 	}
 
 	groupInfo := <-js
