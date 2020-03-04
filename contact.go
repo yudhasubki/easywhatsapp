@@ -2,7 +2,6 @@ package easywhatsapp
 
 import (
 	"regexp"
-	"strings"
 )
 
 const (
@@ -14,8 +13,7 @@ func (w *MessageHandler) GetGroupJID() map[string]string {
 	groups := make(map[string]string)
 	for _, j := range w.RemoteJID {
 		if rex.Match([]byte(j)) {
-			idx := strings.Index(j, "-")
-			groups[j] = j[idx+1 : len(j)]
+			groups[j] = j
 		}
 	}
 	return groups
