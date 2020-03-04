@@ -10,11 +10,14 @@ go get github.com/yudhasubki/easywhatsapp
 ```
 
 ## Task
-- [ ] Login
+- [x] Login
 - [x] Send Message
 - [x] Retrieve All Message
 - [x] Retrieve Message By JID
 - [x] Get All JID
+- [x] Create Group
+- [x] Search Message
+- [x] Get Group ID
 
 ## Status
 This project is still under maintenance.
