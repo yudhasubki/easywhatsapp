@@ -159,9 +159,11 @@ func (e *EasyWhatsapp) SearchMessage(keyMessage string) (bool, SearchInfo, error
 
 	msg := decodeMessages(query)
 	for _, m := range msg {
-		if keyMessage == *m.Message.Conversation && *m.Key.FromMe {
-			info.JID = *m.Key.RemoteJid
-			info.FromMe = *m.Key.FromMe
+		if m.Message.Conversation != nil && m.Key.FromMe != nil {
+			if keyMessage == *m.Message.Conversation && *m.Key.FromMe {
+				info.JID = *m.Key.RemoteJid
+				info.FromMe = *m.Key.FromMe
+			}
 		}
 	}
 	return true, info, nil
