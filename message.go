@@ -28,6 +28,7 @@ type SearchInfo struct {
 	JID          string
 	FromMe       bool
 	Conversation string
+	Timestamp    uint64
 }
 
 func (m *MessageHandler) ShouldCallSynchronously() bool {
@@ -161,13 +162,12 @@ func (e *EasyWhatsapp) SearchMessage(keyMessage string) (bool, []SearchInfo, err
 	msg := decodeMessages(query)
 	for _, m := range msg {
 		if m.Message.Conversation != nil && m.Key.FromMe != nil {
-			if keyMessage == *m.Message.Conversation {
-				infos = append(infos, SearchInfo{
-					JID:          *m.Key.RemoteJid,
-					FromMe:       *m.Key.FromMe,
-					Conversation: *m.Message.Conversation,
-				})
-			}
+			infos = append(infos, SearchInfo{
+				JID:          *m.Key.RemoteJid,
+				FromMe:       *m.Key.FromMe,
+				Conversation: *m.Message.Conversation,
+				Timestamp:    *m.MessageTimestamp,
+			})
 		}
 	}
 	return true, infos, nil
