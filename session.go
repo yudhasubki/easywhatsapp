@@ -13,7 +13,6 @@ const (
 )
 
 func (w *EasyWhatsapp) Read() (whatsapp.Session, error) {
-	fmt.Println("Path : ", w.path())
 	file, err := os.Open(w.path())
 	if err != nil {
 		return w.Session, err

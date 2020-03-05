@@ -25,8 +25,9 @@ type History struct {
 }
 
 type SearchInfo struct {
-	JID    string
-	FromMe bool
+	JID          string
+	FromMe       bool
+	Conversation string
 }
 
 func (m *MessageHandler) ShouldCallSynchronously() bool {
@@ -150,23 +151,26 @@ func (w *EasyWhatsapp) SendText(remoteJid string, message string) (string, error
 	return msgId, nil
 }
 
-func (e *EasyWhatsapp) SearchMessage(keyMessage string) (bool, SearchInfo, error) {
-	info := SearchInfo{}
+func (e *EasyWhatsapp) SearchMessage(keyMessage string) (bool, []SearchInfo, error) {
+	infos := make([]SearchInfo, 0)
 	query, err := e.Connection.Search(keyMessage, 100, 1)
 	if err != nil {
-		return false, SearchInfo{}, err
+		return false, []SearchInfo{}, err
 	}
 
 	msg := decodeMessages(query)
 	for _, m := range msg {
 		if m.Message.Conversation != nil && m.Key.FromMe != nil {
-			if keyMessage == *m.Message.Conversation && *m.Key.FromMe {
-				info.JID = *m.Key.RemoteJid
-				info.FromMe = *m.Key.FromMe
+			if keyMessage == *m.Message.Conversation {
+				infos = append(infos, SearchInfo{
+					JID:          *m.Key.RemoteJid,
+					FromMe:       *m.Key.FromMe,
+					Conversation: *m.Message.Conversation,
+				})
 			}
 		}
 	}
-	return true, info, nil
+	return true, infos, nil
 }
 
 func decodeMessages(n *binary.Node) []*proto.WebMessageInfo {
