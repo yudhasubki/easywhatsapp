@@ -63,13 +63,12 @@ func (m *MessageHandler) HandleError(err error) {
 	log.Printf("error occured while retrieving chat history: %s", err.Error())
 }
 
-func (w *EasyWhatsapp) AddHandler() *EasyWhatsapp {
+func (w *EasyWhatsapp) AddHandler() {
 	w.Message = MessageHandler{
 		Connection: w.Connection,
 		RemoteJID:  make(map[string]string),
 	}
 	w.Connection.AddHandler(w)
-	return w
 }
 
 func (w *EasyWhatsapp) GetHistory(remoteJid string, chunkSize int) []History {

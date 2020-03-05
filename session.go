@@ -13,6 +13,7 @@ const (
 )
 
 func (w *EasyWhatsapp) Read() (whatsapp.Session, error) {
+	fmt.Println("Path : ", w.path())
 	file, err := os.Open(w.path())
 	if err != nil {
 		return w.Session, err
@@ -59,15 +60,15 @@ func (w *EasyWhatsapp) Exist() bool {
 }
 
 func (w *EasyWhatsapp) path() string {
-	sessionPath := w.SessionPath
-	if sessionPath == nil {
-		*sessionPath = os.TempDir()
+	sessionPath := os.TempDir()
+	if w.SessionPath != nil {
+		sessionPath = *w.SessionPath
 	}
 
-	sessionFileName := w.SessionFileName
-	if sessionFileName == nil {
-		*sessionFileName = FILE_NAME
+	sessionFileName := FILE_NAME
+	if w.SessionFileName != nil {
+		sessionFileName = *w.SessionFileName
 	}
 
-	return fmt.Sprintf("%s/%s", *sessionPath, *sessionFileName)
+	return fmt.Sprintf("%s/%s", sessionPath, sessionFileName)
 }
