@@ -23,28 +23,28 @@ go get github.com/yudhasubki/easywhatsapp
 
 init struct
 ```go
-    wa, err := easywhatsapp.New(5, true)
-	if err != nil {
-		log.Printf("err : %v", err)
-	}
-    // then you need to send qrcode with Pusher. 
+wa, err := easywhatsapp.New(5, true)
+if err != nil {
+    log.Printf("err : %v", err)
+}
+// then you need to send qrcode with Pusher. 
 
-    client := make(map[string]string)
-    client["APP_ID"] = "YOUR_APP_ID"
-    client["APP_KEY"] = "YOUR_APP_KEY"
-    client["APP_SECRET"] = "YOUR_APP_SECRET"
-    client["CLUSTER"] = "YOUR_CLIENT_CLUSTER"
-    
-    // Add handler to retrieve message, jids, or related with messages
-    wa.AddHandler()
-    
-    pusherClient := wa.Client(client)
-    wa.Streamer.Pusher = pusherClient
-    
-    err = wa.Login()
-    if err != nil {
-        log.Printf("err : %v", err)
-    }
+client := make(map[string]string)
+client["APP_ID"] = "YOUR_APP_ID"
+client["APP_KEY"] = "YOUR_APP_KEY"
+client["APP_SECRET"] = "YOUR_APP_SECRET"
+client["CLUSTER"] = "YOUR_CLIENT_CLUSTER"
+
+// Add handler to retrieve message, jids, or related with messages
+wa.AddHandler()
+
+pusherClient := wa.Client(client)
+wa.Streamer.Pusher = pusherClient
+
+err = wa.Login()
+if err != nil {
+    log.Printf("err : %v", err)
+}
 ```
 
 Send Message
