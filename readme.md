@@ -78,6 +78,13 @@ if err != nil {
 log.Printf("%v", group)
 ```
 
+Get All JID
+```go
+for _, j := range wa.Message.RemoteJID {
+    log.Printf("jid : %v \n", j)
+}
+```
+
 Get Group JID
 ```go
 groupJids := wa.GetGroupJID()
