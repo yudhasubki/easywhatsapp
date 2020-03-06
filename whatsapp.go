@@ -56,7 +56,7 @@ func timeout(timeout int) time.Duration {
 	return time.Duration(timeout) * time.Second
 }
 
-func client(client map[string]string) pusher.Client {
+func Client(client map[string]string) pusher.Client {
 	return pusher.Client{
 		AppID:   client["APP_ID"],
 		Key:     client["APP_KEY"],
