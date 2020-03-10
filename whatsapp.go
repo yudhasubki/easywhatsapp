@@ -21,7 +21,8 @@ type EasyWhatsapp struct {
 }
 
 type Streamer struct {
-	Pusher PusherClient
+	Pusher  PusherClient
+	Console ConsoleClient
 }
 
 func (m *EasyWhatsapp) ShouldCallSynchronously() bool {
