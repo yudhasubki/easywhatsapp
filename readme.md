@@ -35,6 +35,9 @@ client["APP_KEY"] = "YOUR_APP_KEY"
 client["APP_SECRET"] = "YOUR_APP_SECRET"
 client["CLUSTER"] = "YOUR_CLIENT_CLUSTER"
 
+// or print in terminal console
+wa.Streamer.Console.EnableConsole = true
+
 // Add handler to retrieve message, jids, or related with messages
 wa.AddHandler()
 
