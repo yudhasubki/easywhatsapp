@@ -42,12 +42,16 @@ wa.Streamer.Console.EnableConsole = true
 wa.AddHandler()
 
 pusherClient := wa.Client(client)
-wa.Streamer.Pusher = pusherClient
+wa.Streamer.Pusher.Client = pusherClient
 
 err = wa.Login()
 if err != nil {
     log.Printf("err : %v", err)
 }
+
+//use time.After if relate with message, contacts, chats 
+fmt.Println("Waiting for chats info...")
+<-time.After(5 * time.Second)
 ```
 
 Send Message
