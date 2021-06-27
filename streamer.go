@@ -1,6 +1,8 @@
 package easywhatsapp
 
 import (
+	"log"
+
 	qrcodeTerminal "github.com/Baozisoftware/qrcode-terminal-go"
 	"github.com/pusher/pusher-http-go"
 )
@@ -17,7 +19,10 @@ type ConsoleClient struct {
 
 func (w *EasyWhatsapp) RenderQRCodeHTMLPusher(qrCode string) {
 	if w.Streamer.Pusher.Channel != "" && w.Streamer.Pusher.EventName != "" {
-		w.Streamer.Pusher.Client.Trigger(w.Streamer.Pusher.Channel, w.Streamer.Pusher.EventName, qrCode)
+		err := w.Streamer.Pusher.Client.Trigger(w.Streamer.Pusher.Channel, w.Streamer.Pusher.EventName, qrCode)
+		if err != nil {
+			log.Printf("error streamer : %v", err.Error())
+		}
 	}
 }
 
