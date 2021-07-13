@@ -10,11 +10,7 @@ func (w *EasyWhatsapp) Login() error {
 	if err == nil {
 		session, err = w.Connection.RestoreWithSession(w.Session)
 		if err != nil {
-			err = w.Delete()
-			if err != nil {
-				return err
-			}
-			return w.Login()
+			return err
 		}
 	} else {
 		qr := w.GenerateQRCode()
