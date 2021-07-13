@@ -10,14 +10,17 @@ import (
 )
 
 type EasyWhatsapp struct {
-	Timeout         time.Duration
-	Connection      *whatsapp.Conn
-	Session         whatsapp.Session
-	Streamer        Streamer
-	Message         MessageHandler
-	Synchronously   bool
-	SessionPath     *string
-	SessionFileName *string
+	Timeout                  time.Duration
+	Connection               *whatsapp.Conn
+	Session                  whatsapp.Session
+	Streamer                 Streamer
+	Message                  MessageHandler
+	Synchronously            bool
+	SessionPath              *string
+	SessionFileName          *string
+	RetryConnection          int
+	RetryAfterFailed         int
+	EnableErrorMessageOutput bool
 }
 
 type Streamer struct {

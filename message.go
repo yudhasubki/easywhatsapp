@@ -12,9 +12,10 @@ import (
 )
 
 type MessageHandler struct {
-	Connection *whatsapp.Conn
-	Messages   []History
-	RemoteJID  map[string]string
+	Connection               *whatsapp.Conn
+	Messages                 []History
+	RemoteJID                map[string]string
+	EnableErrorMessageOutput bool
 }
 
 type History struct {
@@ -62,13 +63,16 @@ func (m *MessageHandler) HandleTextMessage(message whatsapp.TextMessage) {
 }
 
 func (m *MessageHandler) HandleError(err error) {
-	log.Printf("error occured while retrieving chat history: %s", err.Error())
+	if m.EnableErrorMessageOutput {
+		log.Printf("error occured while retrieving chat history: %s", err.Error())
+	}
 }
 
 func (w *EasyWhatsapp) AddHandler() {
 	w.Message = MessageHandler{
-		Connection: w.Connection,
-		RemoteJID:  make(map[string]string),
+		Connection:               w.Connection,
+		RemoteJID:                make(map[string]string),
+		EnableErrorMessageOutput: w.EnableErrorMessageOutput,
 	}
 	w.Connection.AddHandler(w)
 }
