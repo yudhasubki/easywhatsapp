@@ -7,7 +7,7 @@ import (
 func (w *EasyWhatsapp) Login() error {
 	session, err := w.Read()
 	if err == nil {
-		session, err = w.Connection.RestoreWithSession(w.Session)
+		err = w.Connection.Restore()
 		if err != nil {
 			return fmt.Errorf("restoring failed: %v", err)
 		}
