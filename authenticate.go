@@ -2,7 +2,6 @@ package easywhatsapp
 
 import (
 	"fmt"
-	"time"
 )
 
 func (w *EasyWhatsapp) Login() error {
@@ -10,15 +9,7 @@ func (w *EasyWhatsapp) Login() error {
 	if err == nil {
 		session, err = w.Connection.RestoreWithSession(w.Session)
 		if err != nil {
-			for i := 0; i < w.RetryConnection; i++ {
-				session, err = w.Connection.RestoreWithSession(w.Session)
-				if i == w.RetryConnection && err != nil {
-					return err
-				}
-
-				fmt.Println("Retrying restore session...")
-				time.Sleep(time.Duration(w.RetryAfterFailed) * time.Second)
-			}
+			return fmt.Errorf("restoring failed: %v", err)
 		}
 	} else {
 		qr := w.GenerateQRCode()
